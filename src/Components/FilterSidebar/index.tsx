@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import {
   Sidebar,
   SectionTitle,
@@ -13,14 +13,14 @@ import { useContext } from 'react';
 const FilterSidebar = () => {
   const [employeeType, setEmployeeType] = useState<string[]>([]);
   const [salary, setSalary] = useState<string>('');
-  const handleEmployeeTypeChange = (value: string, checked: boolean) => {
+  const handleEmployeeTypeChange = (value: string, checked: boolean): void => {
     if (checked) {
       setEmployeeType([...employeeType, value]);
     } else {
       setEmployeeType(employeeType.filter((type) => type !== value));
     }
   };
-  const handleSalaryChange = (sal: string) => {
+  const handleSalaryChange = (sal: string): void => {
     setSalary(sal);
   };
   const store = useContext(MobXProviderContext);
@@ -29,7 +29,7 @@ const FilterSidebar = () => {
     jobStore.fetchJobDetails(employeeType, salary);
   }, [salary, employeeType, store]);
 
-  const renderEmployeeTypeFilters = () => {
+  const renderEmployeeTypeFilters = ():ReactNode => {
     return ['Full Time', 'Part Time', 'Freelance', 'Internship'].map((e) => {
       return (
         <CheckboxLabel>

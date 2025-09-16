@@ -1,9 +1,9 @@
 import { MobXProviderContext, observer } from 'mobx-react';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, type ReactNode } from 'react';
 import Loader from '../Loader/Loader';
 import { ProfileCardBox } from './styledComp';
 // eslint-disable-next-line react-refresh/only-export-components
-const ProfileCard = () => {
+const ProfileCard = (): ReactNode => {
   console.log(useContext(MobXProviderContext));
   const { profileStore } = useContext(MobXProviderContext);
   const { apiStatus, profileDetails } = profileStore;
@@ -14,7 +14,7 @@ const ProfileCard = () => {
     fetchProfile();
   }, []);
 
-  const renderProfileCard = () => {
+  const renderProfileCard = (): ReactNode => {
     return (
       <ProfileCardBox>
         <div>

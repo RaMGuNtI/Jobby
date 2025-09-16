@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 import { InputBox, Input } from './styledComp';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const InputLabelBox = forwardRef<HTMLInputElement, Props>(
-  ({ label, id, type, placeHolder }, ref) => {
+  ({ label, id, type, placeHolder }, ref): ReactNode => {
     return (
       <InputBox>
         <label htmlFor={id}>{label}</label>

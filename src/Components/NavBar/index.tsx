@@ -1,9 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Logo, NavbarBox, NavItems } from './styledComp';
 import Cookies from 'js-cookie';
-const NavBar = () => {
+import type { ReactNode } from 'react';
+const NavBar = (): ReactNode => {
   const navigate = useNavigate();
-  const logout = () => {
+  const logout = (): void => {
     Cookies.remove('Token');
     navigate('/login');
   };

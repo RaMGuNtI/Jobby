@@ -13,6 +13,7 @@ import {
   SectionTitle,
   Description,
 } from './styledComp';
+import type { ReactNode } from 'react';
 
 const JobDetailCard = ({
   company_logo_url,
@@ -22,7 +23,7 @@ const JobDetailCard = ({
   package_per_annum,
   rating,
   title,
-}: JobDetailInterface) => {
+}: JobDetailInterface):ReactNode => {
   return (
     <Card>
       <Header>

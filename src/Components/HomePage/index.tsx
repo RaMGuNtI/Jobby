@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { HomePageBox } from './styledComp';
+import type { ReactNode } from 'react';
 
-const HomePage = () => {
+const HomePage = ():ReactNode => {
   const navigate = useNavigate();
   return (
     <HomePageBox>

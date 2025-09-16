@@ -5,8 +5,9 @@ import { MobXProviderContext, observer } from 'mobx-react';
 import JobDetailCard from '../JobDetailCard/index.tsx';
 import type { JobDetailInterface } from '../../Store/JobDetailStore.tsx';
 import { Link } from 'react-router-dom';
+import type { ReactNode } from 'react';
 // eslint-disable-next-line react-refresh/only-export-components
-const JobsPage = () => {
+const JobsPage = (): ReactNode => {
   const [searchInput, setSearchInput] = useState('');
   const { jobStore } = useContext(MobXProviderContext);
   useEffect(() => {

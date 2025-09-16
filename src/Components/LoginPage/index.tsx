@@ -29,7 +29,7 @@ const LoginPage = () => {
   if (Cookies.get('Token') !== undefined) {
     return <Navigate to="/" />;
   }
-  const submitCredentials = async () => {
+  const submitCredentials = async (): Promise<void> => {
     if (!usernameInputRef.current || !passwordInputRef.current) return;
     const response = await loginToJobby(
       usernameInputRef.current.value,

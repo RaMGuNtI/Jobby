@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, type ReactNode } from 'react';
 import {
   Card,
   Header,
@@ -32,7 +32,7 @@ const JobFullDetailCard = () => {
   }, []);
   const job = jobDetails;
 
-  const renderJobSkills = () => {
+  const renderJobSkills = (): ReactNode => {
     return (
       job.skills && (
         <Section>
@@ -52,7 +52,7 @@ const JobFullDetailCard = () => {
     );
   };
 
-  const renderJobLifeAtCompany = () => {
+  const renderJobLifeAtCompany = (): ReactNode => {
     return (
       job.life_at_company && (
         <Section>
@@ -69,7 +69,7 @@ const JobFullDetailCard = () => {
     );
   };
 
-  const renderHeader = () => {
+  const renderHeader = (): ReactNode => {
     return (
       <Header>
         <Logo src={job.company_logo_url} alt="company logo" />
@@ -85,7 +85,7 @@ const JobFullDetailCard = () => {
     );
   };
 
-  const renderSection = () => {
+  const renderSection = (): ReactNode => {
     return (
       <Section>
         <SectionTitle>Description</SectionTitle>
@@ -103,7 +103,7 @@ const JobFullDetailCard = () => {
     );
   };
 
-  function renderJobFullDeTailPage() {
+  function renderJobFullDeTailPage(): ReactNode {
     return (
       <Card>
         {renderHeader()}
