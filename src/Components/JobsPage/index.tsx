@@ -4,7 +4,7 @@ import ProfileCard from '../ProfileCard';
 import { MobXProviderContext, observer } from 'mobx-react';
 import JobDetailCard from '../JobDetailCard/index.tsx';
 import type { JobDetailInterface } from '../../Store/JobDetailStore.tsx';
-
+import { Link } from 'react-router-dom';
 // eslint-disable-next-line react-refresh/only-export-components
 const JobsPage = () => {
   const [searchInput, setSearchInput] = useState('');
@@ -39,8 +39,12 @@ const JobsPage = () => {
           {jobStore.JobsList &&
             jobStore.JobsList.map(
               (jobcard: JobDetailInterface, idx: string) => {
-                console.log(jobcard)
-                return <JobDetailCard key={idx} {...jobcard} />;
+                console.log(jobcard);
+                return (
+                  <Link to={`/jobs/${jobcard.id}`}>
+                    <JobDetailCard key={idx} {...jobcard} />
+                  </Link>
+                );
               }
             )}
         </div>

@@ -5,6 +5,7 @@ import NavBar from './Components/NavBar';
 import './App.css';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 import JobsPage from './Components/JobsPage';
+import JobFullDetailPage from './Components/JobFullDetailPage';
 const App = () => {
   const location = useLocation();
   return (
@@ -25,6 +26,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <JobsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/jobs/:id"
+          element={
+            <ProtectedRoute>
+              <JobFullDetailPage />
             </ProtectedRoute>
           }
         />

@@ -37,8 +37,6 @@ const JobDetailCard = ({
         </LogoAndTitle>
         <Salary>{package_per_annum}</Salary>
       </Header>
-
-      {/* Meta */}
       <Meta>
         <span>
           <FaMapMarkerAlt /> {location}
@@ -47,8 +45,6 @@ const JobDetailCard = ({
           <FaBriefcase /> {employment_type}
         </span>
       </Meta>
-
-      {/* Description */}
       <SectionTitle>Description</SectionTitle>
       <Description>{job_description}</Description>
     </Card>

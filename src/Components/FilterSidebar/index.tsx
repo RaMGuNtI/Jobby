@@ -9,6 +9,7 @@ import {
 } from './styledComp';
 import { MobXProviderContext } from 'mobx-react';
 import { useContext } from 'react';
+
 const FilterSidebar = () => {
   const [employeeType, setEmployeeType] = useState<string[]>([]);
   const [salary, setSalary] = useState<string>('');
@@ -27,46 +28,48 @@ const FilterSidebar = () => {
     const { jobStore } = store;
     jobStore.fetchJobDetails(employeeType, salary);
   }, [salary, employeeType, store]);
+
+  const renderEmployeeTypeFilters = () => {
+    return ['Full Time', 'Part Time', 'Freelance', 'Internship'].map((e) => {
+      return (
+        <CheckboxLabel>
+          <input
+            type="checkbox"
+            checked={employeeType.includes(e)}
+            onChange={(ev) => handleEmployeeTypeChange(e, ev.target.checked)}
+          />{' '}
+          {e}
+        </CheckboxLabel>
+      );
+    });
+  };
+
+  const renderSalaryFilters = () => {
+    return [
+      '10 LPA and above',
+      '20 LPA and above',
+      '30 LPA and above',
+      '40 LPA and above',
+    ].map((e) => {
+      return (
+        <RadioLabel>
+          <input
+            type="radio"
+            name="salary"
+            onChange={() => handleSalaryChange(e)}
+          />{' '}
+          {e}
+        </RadioLabel>
+      );
+    });
+  };
+
   return (
     <Sidebar>
       <SectionTitle>Type of Employment</SectionTitle>
-      <CheckboxGroup>
-        {['Full Time', 'Part Time', 'Freelance', 'Internship'].map((e) => {
-          return (
-            <CheckboxLabel>
-              <input
-                type="checkbox"
-                checked={employeeType.includes(e)}
-                onChange={(ev) =>
-                  handleEmployeeTypeChange(e, ev.target.checked)
-                }
-              />{' '}
-              {e}
-            </CheckboxLabel>
-          );
-        })}
-      </CheckboxGroup>
-
+      <CheckboxGroup>{renderEmployeeTypeFilters()}</CheckboxGroup>
       <SectionTitle>Salary Range</SectionTitle>
-      <RadioGroup>
-        {[
-          '10 LPA and above',
-          '20 LPA and above',
-          '30 LPA and above',
-          '40 LPA and above',
-        ].map((e) => {
-          return (
-            <RadioLabel>
-              <input
-                type="radio"
-                name="salary"
-                onChange={() => handleSalaryChange(e)}
-              />{' '}
-              {e}
-            </RadioLabel>
-          );
-        })}
-      </RadioGroup>
+      <RadioGroup>{renderSalaryFilters()}</RadioGroup>
     </Sidebar>
   );
 };

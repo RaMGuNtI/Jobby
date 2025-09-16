@@ -1,20 +1,19 @@
 import { useRef, useState } from 'react';
 import {
   LoginPageUI,
-  InputBox,
   Logo,
   UserCredentialBox,
   LoginBox,
   LogoBox,
-  Input,
   SubmitBox,
   ErrorMsg,
 } from './styledComp';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 import Cookies from 'js-cookie';
 import { useContext } from 'react';
 import { MobXProviderContext } from 'mobx-react';
+import InputLabelBox from '../InputLabelBox';
 // eslint-disable-next-line react-refresh/only-export-components
 const LoginPage = () => {
   if (Cookies.get('Token')) {
@@ -22,8 +21,9 @@ const LoginPage = () => {
   }
   const { authStore } = useContext(MobXProviderContext);
   const { loginToJobby } = authStore;
-  const usernameInputRef = useRef(null);
-  const passwordInputRef = useRef(null);
+  const usernameInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+  console.log(typeof usernameInputRef);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   if (Cookies.get('Token') !== undefined) {
@@ -47,24 +47,20 @@ const LoginPage = () => {
           <Logo src="https://assets.ccbp.in/frontend/react-js/logo-img.png" />
         </LogoBox>
         <UserCredentialBox>
-          <InputBox>
-            <label htmlFor="username">USERNAME</label>
-            <Input
-              ref={usernameInputRef}
-              id="username"
-              type="text"
-              placeholder="Username"
-            />
-          </InputBox>
-          <InputBox>
-            <label htmlFor="password">PASSWORD</label>
-            <Input
-              ref={passwordInputRef}
-              id="password"
-              type="password"
-              placeholder="Password"
-            />
-          </InputBox>
+          <InputLabelBox
+            label="USERNAME"
+            id="username"
+            placeHolder="Enter Username"
+            ref={usernameInputRef}
+            type="text"
+          />
+          <InputLabelBox
+            label="PASSWORD"
+            id="password"
+            placeHolder="Enter Password"
+            type="password"
+            ref={passwordInputRef}
+          />
         </UserCredentialBox>
         <div>
           <SubmitBox>

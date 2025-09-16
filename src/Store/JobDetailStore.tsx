@@ -34,10 +34,10 @@ export class JobDetailStore {
     makeAutoObservable(this);
   }
 
-  setApiStatus(status: Status) {
+  setApiStatus = (status: Status) => {
     this.apiStatus = status;
-  }
-  fetchJobDetails(id: string) {
+  };
+  fetchJobDetails = (id: string) => {
     this.setApiStatus('pending');
     fetch(`https://apis.ccbp.in/jobs/${id}`, {
       method: 'GET',
@@ -49,10 +49,10 @@ export class JobDetailStore {
         this.setApiStatus('success');
         console.log(res);
       });
-  }
-  setJobDetails(det: JobDetailInterface) {
+  };
+  setJobDetails = (det: JobDetailInterface) => {
     this.jobDetails = det;
-  }
+  };
 }
 
 const jobDetailStore = new JobDetailStore();
