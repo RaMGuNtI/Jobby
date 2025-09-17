@@ -39,7 +39,7 @@ export class ProfileStore {
         console.log(err);
       });
   }
-  
+
   setProfileDetails(profileDetails: ProfileInterface) {
     this.profileDetails = profileDetails;
   }
