@@ -1,18 +1,19 @@
 import { makeAutoObservable } from 'mobx';
 import Cookies from 'js-cookie';
-export interface JobDetailInterface {
+
+interface JobDetailApiResponse {
   company_logo_url: string;
   company_website_url?: string;
   employment_type: string;
   id: string;
   job_description: string;
-  title?: string;
-  skills?: { image_url: string; name: string }[];
+  title: string;
+  skills: { image_url: string; name: string }[];
   life_at_company?: {
     decription: string;
     image_url: string;
   };
-  similar_jobs?: {
+  similar_jobs: {
     company_logo_url: string;
     employment_type: string;
     id: string;
@@ -27,9 +28,11 @@ export interface JobDetailInterface {
 }
 
 type Status = 'pending' | 'success' | 'failure';
-export class JobDetailStore {
-  jobDetails: JobDetailInterface | undefined;
+
+export class JobDetailsModel {
+  jobDetails: JobDetailApiResponse | null = null;
   apiStatus: Status = 'pending';
+  
   constructor() {
     makeAutoObservable(this);
   }
@@ -47,14 +50,14 @@ export class JobDetailStore {
       .then((res) => {
         this.setJobDetails(res.job_details);
         this.setApiStatus('success');
-        console.log(res);
-      });
+      })
+      .catch(() => this.setApiStatus('failure'));
   };
-  setJobDetails = (det: JobDetailInterface) => {
+  setJobDetails = (det: JobDetailApiResponse) => {
     this.jobDetails = det;
   };
 }
 
-const jobDetailStore = new JobDetailStore();
+const jobDetailModel = new JobDetailsModel();
 
-export default jobDetailStore;
+export default jobDetailModel;

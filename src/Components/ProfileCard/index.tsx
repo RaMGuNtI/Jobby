@@ -1,11 +1,10 @@
-import { MobXProviderContext, observer } from 'mobx-react';
-import { useContext, useEffect, type ReactNode } from 'react';
+import { observer } from 'mobx-react';
+import { useEffect, type ReactNode } from 'react';
 import Loader from '../Loader/Loader';
 import { ProfileCardBox } from './styledComp';
-// eslint-disable-next-line react-refresh/only-export-components
-const ProfileCard = (): ReactNode => {
-  console.log(useContext(MobXProviderContext));
-  const { profileStore } = useContext(MobXProviderContext);
+import { useProfileStore } from '../../Hooks/CustomHooks';
+const ProfileCard = observer((): ReactNode => {
+  const profileStore = useProfileStore();
   const { apiStatus, profileDetails } = profileStore;
   useEffect(() => {
     const fetchProfile = async () => {
@@ -34,10 +33,11 @@ const ProfileCard = (): ReactNode => {
     <ProfileCardBox>
       <Loader />
     </ProfileCardBox>
-  ) : (
+  ) : apiStatus === 'success' ? (
     renderProfileCard()
+  ) : (
+    <h1>Something went Wrong</h1>
   );
-};
+});
 
-// eslint-disable-next-line react-refresh/only-export-components
-export default observer(ProfileCard);
+export default ProfileCard;

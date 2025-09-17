@@ -1,5 +1,8 @@
 import Cookies from 'js-cookie';
 import { makeAutoObservable } from 'mobx';
+import { MobXProviderContext } from 'mobx-react';
+import { useContext } from 'react';
+
 export class AuthStore {
   constructor() {
     makeAutoObservable(this);
@@ -27,6 +30,11 @@ export class AuthStore {
     }
   }
 }
+
+export const useAuthStore = () => {
+  const { authStore } = useContext(MobXProviderContext);
+  return authStore;
+};
 
 const authStore = new AuthStore();
 

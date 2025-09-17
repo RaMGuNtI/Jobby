@@ -4,10 +4,12 @@ import Cookies from 'js-cookie';
 import type { ReactNode } from 'react';
 const NavBar = (): ReactNode => {
   const navigate = useNavigate();
+  
   const logout = (): void => {
     Cookies.remove('Token');
     navigate('/login');
   };
+
   return (
     <NavbarBox>
       <Logo src="https://assets.ccbp.in/frontend/react-js/logo-img.png" />

@@ -1,5 +1,4 @@
-/* eslint-disable react-refresh/only-export-components */
-import { useContext, useEffect, type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import {
   Card,
   Header,
@@ -19,34 +18,38 @@ import {
   LifeContainer,
   LifeImage,
 } from './styledComp';
-import { MobXProviderContext, observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
-const JobFullDetailCard = () => {
-  const { jobDetailStore } = useContext(MobXProviderContext);
-  const { jobDetails, fetchJobDetails } = jobDetailStore;
+import { useJobDetailStore } from '../../Hooks/CustomHooks';
+
+const JobFullDetailCard = observer(() => {
+  const jobDetailStore = useJobDetailStore();
+  const { jobDetails, fetchJobDetails, apiStatus } = jobDetailStore;
   const params = useParams();
-  console.log(params);
+
   useEffect(() => {
     fetchJobDetails(params.id);
   }, []);
+
   const job = jobDetails;
 
+  const renderSkill = (
+    skill: { image_url: string; name: string },
+    index: number
+  ) => (
+    <Skill key={index}>
+      <SkillIcon src={skill.image_url} alt={skill.name} />
+      <span>{skill.name}</span>
+    </Skill>
+  );
+  
   const renderJobSkills = (): ReactNode => {
     return (
       job.skills && (
         <Section>
           <SectionTitle>Skills</SectionTitle>
-          <SkillsGrid>
-            {job.skills.map(
-              (skill: { image_url: string; name: string }, index: number) => (
-                <Skill key={index}>
-                  <SkillIcon src={skill.image_url} alt={skill.name} />
-                  <span>{skill.name}</span>
-                </Skill>
-              )
-            )}
-          </SkillsGrid>
+          <SkillsGrid>{job.skills.map(renderSkill)}</SkillsGrid>
         </Section>
       )
     );
@@ -113,7 +116,13 @@ const JobFullDetailCard = () => {
       </Card>
     );
   }
-  return jobDetails === undefined ? <Loader /> : renderJobFullDeTailPage();
-};
+  return apiStatus === 'pending' ? (
+    <Loader />
+  ) : apiStatus === 'success' ? (
+    renderJobFullDeTailPage()
+  ) : (
+    <h1>Something went Wrong</h1>
+  );
+});
 
-export default observer(JobFullDetailCard);
+export default JobFullDetailCard;

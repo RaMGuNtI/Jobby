@@ -12,12 +12,15 @@ type Status = 'pending' | 'success' | 'failure';
 export class ProfileStore {
   profileDetails: ProfileInterface | undefined;
   apiStatus: Status = 'pending';
+
   constructor() {
     makeAutoObservable(this);
   }
+
   setApiStatus(status: Status) {
     this.apiStatus = status;
   }
+
   fetchProfileDetails() {
     this.setApiStatus('pending');
     fetch('https://apis.ccbp.in/profile', {
@@ -36,6 +39,7 @@ export class ProfileStore {
         console.log(err);
       });
   }
+  
   setProfileDetails(profileDetails: ProfileInterface) {
     this.profileDetails = profileDetails;
   }
