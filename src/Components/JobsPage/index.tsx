@@ -21,6 +21,7 @@ const JobsPage = observer((): ReactNode => {
       <div>
         <input
           value={searchInput}
+          placeholder='search jobs'
           onChange={(e) => setSearchInput(e.target.value)}
         />
         <button
@@ -54,7 +55,7 @@ const JobsPage = observer((): ReactNode => {
       <div>
         <div>
           <ProfileCard />
-          <FilterSidebar />
+          <FilterSidebar fetchJobDetails={jobStore.fetchJobDetails} />
         </div>
         <div>
           {renderSearchBox()}
@@ -66,7 +67,7 @@ const JobsPage = observer((): ReactNode => {
 
   switch (jobStore.apiStatus) {
     case 'pending':
-      return <Loader />;
+      return <Loader data-testid="loader" />;
       break;
     case 'success':
       return renderJobsPage();

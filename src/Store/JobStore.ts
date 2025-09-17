@@ -26,6 +26,8 @@ export class JobStore {
     minimum_package: string = '',
     searchInput: string = ''
   ) => {
+    // this.setApiStatus('pending');
+
     const employmentTypeParameter = employment_type
       .map((type) => EmployeeType[type as keyof typeof EmployeeType])
       .join(',');
