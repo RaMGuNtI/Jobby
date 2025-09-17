@@ -7,12 +7,13 @@ import {
   RadioGroup,
   RadioLabel,
 } from './styledComp';
-import { MobXProviderContext } from 'mobx-react';
-import { useContext } from 'react';
+import { EmployeeType, SalaryRanges } from '../Contansts/constants';
+import { useJobStore } from '../../Hooks/CustomHooks';
 
 const FilterSidebar = () => {
   const [employeeType, setEmployeeType] = useState<string[]>([]);
   const [salary, setSalary] = useState<string>('');
+
   const handleEmployeeTypeChange = (value: string, checked: boolean): void => {
     if (checked) {
       setEmployeeType([...employeeType, value]);
@@ -20,20 +21,23 @@ const FilterSidebar = () => {
       setEmployeeType(employeeType.filter((type) => type !== value));
     }
   };
+
   const handleSalaryChange = (sal: string): void => {
     setSalary(sal);
   };
-  const store = useContext(MobXProviderContext);
-  useEffect(() => {
-    const { jobStore } = store;
-    jobStore.fetchJobDetails(employeeType, salary);
-  }, [salary, employeeType, store]);
 
-  const renderEmployeeTypeFilters = ():ReactNode => {
-    return ['Full Time', 'Part Time', 'Freelance', 'Internship'].map((e) => {
+  const jobStore = useJobStore();
+
+  useEffect(() => {
+    jobStore.fetchJobDetails(employeeType, salary);
+  }, [employeeType, salary]);
+
+  const renderEmployeeTypeFilters = (): ReactNode => {
+    return Object.keys(EmployeeType).map((e, idx) => {
       return (
         <CheckboxLabel>
           <input
+            key={idx}
             type="checkbox"
             checked={employeeType.includes(e)}
             onChange={(ev) => handleEmployeeTypeChange(e, ev.target.checked)}
@@ -45,19 +49,15 @@ const FilterSidebar = () => {
   };
 
   const renderSalaryFilters = () => {
-    return [
-      '10 LPA and above',
-      '20 LPA and above',
-      '30 LPA and above',
-      '40 LPA and above',
-    ].map((e) => {
+    return Object.keys(SalaryRanges).map((e) => {
       return (
         <RadioLabel>
           <input
             type="radio"
             name="salary"
+            checked={salary === e}
             onChange={() => handleSalaryChange(e)}
-          />{' '}
+          />
           {e}
         </RadioLabel>
       );

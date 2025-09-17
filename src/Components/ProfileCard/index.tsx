@@ -1,17 +1,13 @@
-import { MobXProviderContext, observer } from 'mobx-react';
-import { useContext, useEffect, type ReactNode } from 'react';
+import { observer } from 'mobx-react';
+import { useEffect, type ReactNode } from 'react';
 import Loader from '../Loader/Loader';
 import { ProfileCardBox } from './styledComp';
-// eslint-disable-next-line react-refresh/only-export-components
-const ProfileCard = (): ReactNode => {
-  console.log(useContext(MobXProviderContext));
-  const { profileStore } = useContext(MobXProviderContext);
+import { useProfileStore } from '../../Hooks/CustomHooks';
+const ProfileCard = observer((): ReactNode => {
+  const profileStore = useProfileStore();
   const { apiStatus, profileDetails } = profileStore;
   useEffect(() => {
-    const fetchProfile = async () => {
-      await profileStore.fetchProfileDetails();
-    };
-    fetchProfile();
+    profileStore.fetchProfileDetails();
   }, []);
 
   const renderProfileCard = (): ReactNode => {
@@ -30,14 +26,17 @@ const ProfileCard = (): ReactNode => {
     );
   };
 
-  return apiStatus === 'pending' ? (
-    <ProfileCardBox>
-      <Loader />
-    </ProfileCardBox>
-  ) : (
-    renderProfileCard()
-  );
-};
+  switch (apiStatus) {
+    case 'pending':
+      return <Loader />;
+      break;
+    case 'success':
+      return renderProfileCard();
+      break;
+    case 'failure':
+      return <h1>Something Went Wrong</h1>;
+      break;
+  }
+});
 
-// eslint-disable-next-line react-refresh/only-export-components
-export default observer(ProfileCard);
+export default ProfileCard;

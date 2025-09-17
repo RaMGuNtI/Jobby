@@ -1,5 +1,4 @@
-/* eslint-disable react-refresh/only-export-components */
-import { useContext, useEffect, type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import {
   Card,
   Header,
@@ -19,34 +18,36 @@ import {
   LifeContainer,
   LifeImage,
 } from './styledComp';
-import { MobXProviderContext, observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
-const JobFullDetailCard = () => {
-  const { jobDetailStore } = useContext(MobXProviderContext);
-  const { jobDetails, fetchJobDetails } = jobDetailStore;
+import { useJobDetailStore } from '../../Hooks/CustomHooks';
+
+const JobFullDetailCard = observer(() => {
+  const jobDetailStore = useJobDetailStore();
+  const { jobDetails, fetchJobDetails, apiStatus } = jobDetailStore;
   const params = useParams();
-  console.log(params);
+
   useEffect(() => {
-    fetchJobDetails(params.id);
+    if (params.id) fetchJobDetails(params.id);
   }, []);
-  const job = jobDetails;
+
+  const renderSkill = (
+    skill: { image_url: string; name: string },
+    index: number
+  ) => (
+    <Skill key={index}>
+      <SkillIcon src={skill.image_url} alt={skill.name} />
+      <span>{skill.name}</span>
+    </Skill>
+  );
 
   const renderJobSkills = (): ReactNode => {
     return (
-      job.skills && (
+      jobDetails.skills && (
         <Section>
           <SectionTitle>Skills</SectionTitle>
-          <SkillsGrid>
-            {job.skills.map(
-              (skill: { image_url: string; name: string }, index: number) => (
-                <Skill key={index}>
-                  <SkillIcon src={skill.image_url} alt={skill.name} />
-                  <span>{skill.name}</span>
-                </Skill>
-              )
-            )}
-          </SkillsGrid>
+          <SkillsGrid>{jobDetails.skills.map(renderSkill)}</SkillsGrid>
         </Section>
       )
     );
@@ -54,13 +55,13 @@ const JobFullDetailCard = () => {
 
   const renderJobLifeAtCompany = (): ReactNode => {
     return (
-      job.life_at_company && (
+      jobDetails.lifeAtCompany && (
         <Section>
           <SectionTitle>Life at Company</SectionTitle>
           <LifeContainer>
-            <p>{job.life_at_company.decription}</p>
+            <p>{jobDetails.lifeAtCompany.description}</p>
             <LifeImage
-              src={job.life_at_company.image_url}
+              src={jobDetails.lifeAtCompany.image_url}
               alt="life at company"
             />
           </LifeContainer>
@@ -72,15 +73,16 @@ const JobFullDetailCard = () => {
   const renderHeader = (): ReactNode => {
     return (
       <Header>
-        <Logo src={job.company_logo_url} alt="company logo" />
+        <Logo src={jobDetails.companyLogoUrl} alt="company logo" />
         <TitleWrapper>
-          <Title>{job.title}</Title>
-          <Rating>⭐ {job.rating}</Rating>
+          <Title>{jobDetails.title}</Title>
+          <Rating>⭐ {jobDetails.rating}</Rating>
           <Meta>
-            <span>{job.location}</span> | <span>{job.employment_type}</span>
+            <span>{jobDetails.location}</span> |{' '}
+            <span>{jobDetails.employmentType}</span>
           </Meta>
         </TitleWrapper>
-        <Package>{job.package_per_annum}</Package>
+        <Package>{jobDetails.packagePerAnnum}</Package>
       </Header>
     );
   };
@@ -89,10 +91,10 @@ const JobFullDetailCard = () => {
     return (
       <Section>
         <SectionTitle>Description</SectionTitle>
-        <Description>{job.job_description}</Description>
-        {job.company_website_url && (
+        <Description>{jobDetails.jobDescription}</Description>
+        {jobDetails.companyWebsiteUrl && (
           <VisitLink
-            href={job.company_website_url}
+            href={jobDetails.companyWebsiteUrl}
             target="_blank"
             rel="noreferrer"
           >
@@ -113,7 +115,17 @@ const JobFullDetailCard = () => {
       </Card>
     );
   }
-  return jobDetails === undefined ? <Loader /> : renderJobFullDeTailPage();
-};
+  switch (apiStatus) {
+    case 'pending':
+      return <Loader />;
+      break;
+    case 'success':
+      return renderJobFullDeTailPage();
+      break;
+    case 'failure':
+      return <h1>Something Went Wrong</h1>;
+      break;
+  }
+});
 
-export default observer(JobFullDetailCard);
+export default JobFullDetailCard;

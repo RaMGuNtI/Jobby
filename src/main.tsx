@@ -4,14 +4,21 @@ import './index.css';
 import App from './App.tsx';
 import { Provider } from 'mobx-react';
 import { BrowserRouter } from 'react-router-dom';
-import authStore from './Store/AuthStore.tsx';
-import profileStore from './Store/ProfileStore.tsx';
-import jobStore from './Store/JobStore.tsx';
-import jobDetailStore from './Store/JobDetailStore.tsx';
+import authStore from './Store/AuthStore.ts';
+import profileStore from './Store/ProfileStore.ts';
+import jobStore from './Store/JobStore.ts';
+import jobDetailStore from './Store/JobDetailStore.ts';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <Provider {...{ authStore, profileStore, jobStore, jobDetailStore }}>
+      <Provider
+        {...{
+          authStore,
+          profileStore,
+          jobStore,
+          jobDetailStore,
+        }}
+      >
         <App />
       </Provider>
     </BrowserRouter>

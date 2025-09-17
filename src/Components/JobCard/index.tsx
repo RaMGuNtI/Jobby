@@ -1,6 +1,4 @@
 import { FaStar, FaMapMarkerAlt, FaBriefcase } from 'react-icons/fa';
-import { type JobDetailInterface } from '../../Store/JobDetailStore';
-
 import {
   Card,
   Header,
@@ -14,21 +12,22 @@ import {
   Description,
 } from './styledComp';
 import type { ReactNode } from 'react';
+import type { JobSummaryModel } from '../../Models/JobSummaryModel';
 
-const JobDetailCard = ({
-  company_logo_url,
-  employment_type,
-  job_description,
+const JobsCard = ({
+  companyLogoUrl,
+  employmentType,
+  jobDescription,
   location,
-  package_per_annum,
+  packagePerAnnum,
   rating,
   title,
-}: JobDetailInterface):ReactNode => {
+}: JobSummaryModel): ReactNode => {
   return (
     <Card>
       <Header>
         <LogoAndTitle>
-          <Logo src={company_logo_url} alt="Company Logo" />
+          <Logo src={companyLogoUrl} alt="Company Logo" />
           <div>
             <Title>{title}</Title>
             <Rating>
@@ -36,20 +35,20 @@ const JobDetailCard = ({
             </Rating>
           </div>
         </LogoAndTitle>
-        <Salary>{package_per_annum}</Salary>
+        <Salary>{packagePerAnnum}</Salary>
       </Header>
       <Meta>
         <span>
           <FaMapMarkerAlt /> {location}
         </span>
         <span>
-          <FaBriefcase /> {employment_type}
+          <FaBriefcase /> {employmentType}
         </span>
       </Meta>
       <SectionTitle>Description</SectionTitle>
-      <Description>{job_description}</Description>
+      <Description>{jobDescription}</Description>
     </Card>
   );
 };
 
-export default JobDetailCard;
+export default JobsCard;

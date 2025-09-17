@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 import { makeAutoObservable } from 'mobx';
+
 export class AuthStore {
   constructor() {
     makeAutoObservable(this);
@@ -27,6 +28,7 @@ export class AuthStore {
     }
   }
 }
+
 
 const authStore = new AuthStore();
 
