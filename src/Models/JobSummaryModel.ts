@@ -1,4 +1,3 @@
-import { makeAutoObservable } from 'mobx';
 export interface JobApiResponse {
   company_logo_url: string;
   employment_type: string;
@@ -9,7 +8,7 @@ export interface JobApiResponse {
   rating: number;
   title: string;
 }
-export class JobModel {
+export class JobSummaryModel {
   companyLogoUrl: string;
   employmentType: string;
   id: string;
@@ -28,6 +27,5 @@ export class JobModel {
     this.packagePerAnnum = data.package_per_annum;
     this.rating = data.rating;
     this.title = data.title;
-    makeAutoObservable(this);
   }
 }

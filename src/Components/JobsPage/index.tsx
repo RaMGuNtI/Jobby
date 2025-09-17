@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { useJobStore } from '../../Hooks/CustomHooks.ts';
-import { JobModel } from '../../Store/JobModel.ts';
+import { JobSummaryModel } from '../../Models/JobSummaryModel.ts';
 import JobsCard from '../JobCard/index.tsx';
 import Loader from '../Loader/Loader.tsx';
 const JobsPage = observer((): ReactNode => {
@@ -13,10 +13,7 @@ const JobsPage = observer((): ReactNode => {
   const jobStore = useJobStore();
 
   useEffect(() => {
-    const fet = async () => {
-      await jobStore.fetchJobDetails();
-    };
-    fet();
+    jobStore.fetchJobDetails();
   }, []);
 
   const renderSearchBox = () => {
@@ -41,7 +38,7 @@ const JobsPage = observer((): ReactNode => {
     return jobStore.JobsList.length !== 0 ? (
       <div>
         {jobStore.JobsList &&
-          jobStore.JobsList.map((jobcard: JobModel, idx: number) => (
+          jobStore.JobsList.map((jobcard: JobSummaryModel, idx: number) => (
             <Link to={`/jobs/${jobcard.id}`} key={jobcard.id}>
               <JobsCard {...jobcard} key={idx} />
             </Link>
@@ -67,14 +64,17 @@ const JobsPage = observer((): ReactNode => {
     );
   };
 
-  return jobStore.apiStatus === 'pending' ? (
-    <Loader />
-  ) : jobStore.apiStatus === 'success' ? (
-    renderJobsPage()
-  ) : (
-    <h1>Something went Wrong</h1>
-  );
-  // return renderJobsPage();
+  switch (jobStore.apiStatus) {
+    case 'pending':
+      return <Loader />;
+      break;
+    case 'success':
+      return renderJobsPage();
+      break;
+    case 'failure':
+      return <h1>Something Went Wrong</h1>;
+      break;
+  }
 });
 
 export default JobsPage;

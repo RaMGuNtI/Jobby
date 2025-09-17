@@ -1,20 +1,25 @@
 import { makeAutoObservable } from 'mobx';
 import Cookies from 'js-cookie';
 import { EmployeeType, SalaryRanges } from '../Components/Contansts/constants';
-import { JobModel, type JobApiResponse } from './JobModel';
+import {
+  JobSummaryModel,
+  type JobApiResponse,
+} from '../Models/JobSummaryModel';
 
 type Status = 'pending' | 'success' | 'failure';
 
-class JobStore {
-  JobsList: JobModel[] = [];
-  apiStatus:Status = 'pending'
+export class JobStore {
+  JobsList: JobSummaryModel[] = [];
+
+  apiStatus: Status = 'pending';
+
   constructor() {
     makeAutoObservable(this);
   }
 
-  setApiStatus = (status:Status)=>{
-  this.apiStatus =  status
-  }
+  setApiStatus = (status: Status) => {
+    this.apiStatus = status;
+  };
 
   fetchJobDetails = (
     employment_type: string[] = [],
@@ -36,21 +41,21 @@ class JobStore {
     )
       .then((res) => res.json())
       .then((res) => {
-        console.log('API RESPONSE 👉', res);
-
-        const jobs = res.jobs.map((job: JobApiResponse) => new JobModel(job));
+        const jobs = res.jobs.map(
+          (job: JobApiResponse) => new JobSummaryModel(job)
+        );
         this.setJobsList(jobs);
-        this.setApiStatus('success')
+        this.setApiStatus('success');
       })
 
       .catch((err) => {
-        this.setApiStatus('failure')
+        this.setApiStatus('failure');
         console.log(err);
       });
   };
 
-  setJobsList = (lis: JobModel[]) => {
-    this.JobsList = lis;
+  setJobsList = (jobModels: JobSummaryModel[]) => {
+    this.JobsList = jobModels;
   };
 }
 

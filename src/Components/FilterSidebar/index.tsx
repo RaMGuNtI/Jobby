@@ -8,7 +8,7 @@ import {
   RadioLabel,
 } from './styledComp';
 import { EmployeeType, SalaryRanges } from '../Contansts/constants';
-import { useStores } from '../../Hooks/CustomHooks';
+import { useJobStore } from '../../Hooks/CustomHooks';
 
 const FilterSidebar = () => {
   const [employeeType, setEmployeeType] = useState<string[]>([]);
@@ -26,12 +26,11 @@ const FilterSidebar = () => {
     setSalary(sal);
   };
 
-  const store = useStores();
+  const jobStore = useJobStore();
 
   useEffect(() => {
-    const { jobStore } = store;
     jobStore.fetchJobDetails(employeeType, salary);
-  }, [employeeType, salary, store]);
+  }, [employeeType, salary]);
 
   const renderEmployeeTypeFilters = (): ReactNode => {
     return Object.keys(EmployeeType).map((e, idx) => {

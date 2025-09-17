@@ -29,10 +29,8 @@ const JobFullDetailCard = observer(() => {
   const params = useParams();
 
   useEffect(() => {
-    fetchJobDetails(params.id);
+    if (params.id) fetchJobDetails(params.id);
   }, []);
-
-  const job = jobDetails;
 
   const renderSkill = (
     skill: { image_url: string; name: string },
@@ -43,13 +41,13 @@ const JobFullDetailCard = observer(() => {
       <span>{skill.name}</span>
     </Skill>
   );
-  
+
   const renderJobSkills = (): ReactNode => {
     return (
-      job.skills && (
+      jobDetails.skills && (
         <Section>
           <SectionTitle>Skills</SectionTitle>
-          <SkillsGrid>{job.skills.map(renderSkill)}</SkillsGrid>
+          <SkillsGrid>{jobDetails.skills.map(renderSkill)}</SkillsGrid>
         </Section>
       )
     );
@@ -57,13 +55,13 @@ const JobFullDetailCard = observer(() => {
 
   const renderJobLifeAtCompany = (): ReactNode => {
     return (
-      job.life_at_company && (
+      jobDetails.lifeAtCompany && (
         <Section>
           <SectionTitle>Life at Company</SectionTitle>
           <LifeContainer>
-            <p>{job.life_at_company.decription}</p>
+            <p>{jobDetails.lifeAtCompany.description}</p>
             <LifeImage
-              src={job.life_at_company.image_url}
+              src={jobDetails.lifeAtCompany.image_url}
               alt="life at company"
             />
           </LifeContainer>
@@ -75,15 +73,16 @@ const JobFullDetailCard = observer(() => {
   const renderHeader = (): ReactNode => {
     return (
       <Header>
-        <Logo src={job.company_logo_url} alt="company logo" />
+        <Logo src={jobDetails.companyLogoUrl} alt="company logo" />
         <TitleWrapper>
-          <Title>{job.title}</Title>
-          <Rating>⭐ {job.rating}</Rating>
+          <Title>{jobDetails.title}</Title>
+          <Rating>⭐ {jobDetails.rating}</Rating>
           <Meta>
-            <span>{job.location}</span> | <span>{job.employment_type}</span>
+            <span>{jobDetails.location}</span> |{' '}
+            <span>{jobDetails.employmentType}</span>
           </Meta>
         </TitleWrapper>
-        <Package>{job.package_per_annum}</Package>
+        <Package>{jobDetails.packagePerAnnum}</Package>
       </Header>
     );
   };
@@ -92,10 +91,10 @@ const JobFullDetailCard = observer(() => {
     return (
       <Section>
         <SectionTitle>Description</SectionTitle>
-        <Description>{job.job_description}</Description>
-        {job.company_website_url && (
+        <Description>{jobDetails.jobDescription}</Description>
+        {jobDetails.companyWebsiteUrl && (
           <VisitLink
-            href={job.company_website_url}
+            href={jobDetails.companyWebsiteUrl}
             target="_blank"
             rel="noreferrer"
           >
@@ -116,13 +115,17 @@ const JobFullDetailCard = observer(() => {
       </Card>
     );
   }
-  return apiStatus === 'pending' ? (
-    <Loader />
-  ) : apiStatus === 'success' ? (
-    renderJobFullDeTailPage()
-  ) : (
-    <h1>Something went Wrong</h1>
-  );
+  switch (apiStatus) {
+    case 'pending':
+      return <Loader />;
+      break;
+    case 'success':
+      return renderJobFullDeTailPage();
+      break;
+    case 'failure':
+      return <h1>Something Went Wrong</h1>;
+      break;
+  }
 });
 
 export default JobFullDetailCard;

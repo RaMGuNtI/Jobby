@@ -7,10 +7,7 @@ const ProfileCard = observer((): ReactNode => {
   const profileStore = useProfileStore();
   const { apiStatus, profileDetails } = profileStore;
   useEffect(() => {
-    const fetchProfile = async () => {
-      await profileStore.fetchProfileDetails();
-    };
-    fetchProfile();
+    profileStore.fetchProfileDetails();
   }, []);
 
   const renderProfileCard = (): ReactNode => {
@@ -29,15 +26,17 @@ const ProfileCard = observer((): ReactNode => {
     );
   };
 
-  return apiStatus === 'pending' ? (
-    <ProfileCardBox>
-      <Loader />
-    </ProfileCardBox>
-  ) : apiStatus === 'success' ? (
-    renderProfileCard()
-  ) : (
-    <h1>Something went Wrong</h1>
-  );
+  switch (apiStatus) {
+    case 'pending':
+      return <Loader />;
+      break;
+    case 'success':
+      return renderProfileCard();
+      break;
+    case 'failure':
+      return <h1>Something Went Wrong</h1>;
+      break;
+  }
 });
 
 export default ProfileCard;

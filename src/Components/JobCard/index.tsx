@@ -12,7 +12,7 @@ import {
   Description,
 } from './styledComp';
 import type { ReactNode } from 'react';
-import type { JobModel } from '../../Store/JobModel';
+import type { JobSummaryModel } from '../../Models/JobSummaryModel';
 
 const JobsCard = ({
   companyLogoUrl,
@@ -22,7 +22,7 @@ const JobsCard = ({
   packagePerAnnum,
   rating,
   title,
-}: JobModel): ReactNode => {
+}: JobSummaryModel): ReactNode => {
   return (
     <Card>
       <Header>
