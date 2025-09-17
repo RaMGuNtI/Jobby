@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import authStore from './Store/AuthStore.ts';
 import profileStore from './Store/ProfileStore.ts';
 import jobStore from './Store/JobStore.ts';
-import jobDetailModel from './Store/JobDetailStore.ts';
+import jobDetailStore from './Store/JobDetailStore.ts';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
@@ -16,7 +16,7 @@ createRoot(document.getElementById('root')!).render(
           authStore,
           profileStore,
           jobStore,
-          jobDetailStore: jobDetailModel,
+          jobDetailStore,
         }}
       >
         <App />

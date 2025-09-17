@@ -38,6 +38,6 @@ export class JobDetailStore {
   };
 }
 
-const jobDetailModel = new JobDetailStore();
+const jobDetailStore = new JobDetailStore();
 
-export default jobDetailModel;
+export default jobDetailStore;
