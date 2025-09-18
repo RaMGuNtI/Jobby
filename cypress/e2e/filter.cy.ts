@@ -1,60 +1,75 @@
+import {
+  stubJobs,
+  stubProfile,
+  stubSearchJobs,
+  stubPartTime,
+  stubInternFilter,
+  stubCombineFil,
+  stubJobDetail,
+} from '../stubs/stubs';
 
 describe('My First Test', () => {
   beforeEach(() => {
+    stubJobs();
+    stubProfile();
+    stubSearchJobs();
+    stubPartTime();
+    stubInternFilter();
+    stubCombineFil();
+    stubJobDetail();
     cy.login('rahul', 'rahul@2021');
   });
 
   it('Visits Jobs Page', () => {
     cy.visit('http://localhost:5173/jobs');
 
-    cy.intercept(
-      'GET',
-      'https://apis.ccbp.in/jobs?employment_type=&minimum_package=&search=',
-      { fixture: 'jobsStubResponse.json' }
-    ).as('fetchJobs');
-
-    cy.intercept('GET', 'https://apis.ccbp.in/profile', {
-      fixture: 'profileStubResponse.json',
-    }).as('fetchProfile');
-
     cy.wait('@fetchProfile');
+
     cy.wait('@fetchJobs');
 
-    cy.contains('Frontend Developer').should('exist');
-    cy.contains('Ram').should('exist');
+    cy.verifyTextExists('Frontend Developer');
+ 
+    cy.verifyTextExists('Ram');
 
-    cy.get('input[placeholder="search jobs"]').type('dev');
-    cy.intercept(
-      'GET',
-      'https://apis.ccbp.in/jobs?employment_type=&minimum_package=&search=dev',
-      { fixture: 'searchResultsStubResponse.json' }
-    ).as('fetchSearchJobs');
-    cy.get('button[data-testid="searchjobs"]').click();
+    cy.searchJobs('dev');
+
     cy.wait('@fetchSearchJobs');
 
-    cy.intercept(
-      'GET',
-      'https://apis.ccbp.in/jobs?employment_type=PARTTIME&minimum_package=&search=',
-      { fixture: 'parttimeStubResponse.json' }
-    ).as('fetchPartTime');
-    cy.contains('Part Time').click();
+    cy.clickWithText('Part Time');
+
     cy.wait('@fetchPartTime');
 
-    cy.intercept(
-      'GET',
-      'https://apis.ccbp.in/jobs?employment_type=PARTTIME,INTERNSHIP&minimum_package=&search=',
-      { fixture: 'parttimeStubResponse.json' }
-    ).as('fetchInternship');
-    cy.contains('Internship').click();
+    cy.clickWithText('Internship');
+
     cy.wait('@fetchInternship');
 
-    cy.intercept(
-      'GET',
-      'https://apis.ccbp.in/jobs?employment_type=&minimum_package=&search=Time',
-      { fixture: 'search-filterResponse.json' }
-    ).as('fetchFiltered');
-    cy.get('input[placeholder="search jobs"]').clear().type('Time');
-    cy.get('button[data-testid="searchjobs"]').click();
+    cy.searchJobs('Time');
+
     cy.wait('@fetchFiltered');
+
+    cy.clickWithBtn('logout');
+
+    cy.checkURL('/login');
+
+    cy.visit('http://localhost:5173/');
+
+    cy.checkURL('/login');
+    cy.login('rahul', 'rahul@2021');
+    stubJobs();
+    stubProfile();
+    stubSearchJobs();
+    stubPartTime();
+    stubInternFilter();
+    stubCombineFil();
+    stubJobDetail();
+
+    cy.visitWithPath('jobs');
+    cy.wait('@fetchJobs');
+
+  
+    
+    cy.clickWithText('Frontend Developer');
+
+    cy.wait('@fetchJobDetail');
   });
 });

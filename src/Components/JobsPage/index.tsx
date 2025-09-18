@@ -8,6 +8,7 @@ import { useJobStore } from '../../Hooks/CustomHooks.ts';
 import { JobSummaryModel } from '../../Models/JobSummaryModel.ts';
 import JobsCard from '../JobCard/index.tsx';
 import Loader from '../Loader/Loader.tsx';
+import { JobsPageBox } from './styledComp.ts';
 const JobsPage = observer((): ReactNode => {
   const [searchInput, setSearchInput] = useState('');
   const jobStore = useJobStore();
@@ -65,7 +66,7 @@ const JobsPage = observer((): ReactNode => {
 
   const renderJobsPage = (): ReactNode => {
     return (
-      <div>
+      <JobsPageBox>
         <div>
           <ProfileCard />
           <FilterSidebar fetchJobDetails={jobStore.fetchJobDetails} />
@@ -74,7 +75,7 @@ const JobsPage = observer((): ReactNode => {
           {renderSearchBox()}
           {renderJobsList()}
         </div>
-      </div>
+      </JobsPageBox>
     );
   };
 

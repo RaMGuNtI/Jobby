@@ -5,8 +5,8 @@ export const ProfileCardBox = styled.div`
   flex-direction: column;
   background-image: url('https://assets.ccbp.in/frontend/react-js/profile-bg.png');
   background-size: cover;
-  width: 20%;
-  height: 20%;
+  width: 200px;
+  height: 200px;
   padding: 10px;
   * {
     margin-bottom: 10px;

@@ -17,7 +17,7 @@ const NavBar = (): ReactNode => {
         <Link to="/">Home</Link>
         <Link to="/jobs">Jobs</Link>
       </NavItems>
-      <button onClick={logout}>Logout</button>
+      <button data-testid='logout' onClick={logout}>Logout</button>
     </NavbarBox>
   );
 };
