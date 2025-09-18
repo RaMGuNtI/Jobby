@@ -8,9 +8,12 @@ import {
   RadioLabel,
 } from './styledComp';
 import { EmployeeType, SalaryRanges } from '../Contansts/constants';
-import { useJobStore } from '../../Hooks/CustomHooks';
 
-const FilterSidebar = () => {
+const FilterSidebar = ({
+  fetchJobDetails,
+}: {
+  fetchJobDetails: (employeeType: string[], salary: string) => void;
+}) => {
   const [employeeType, setEmployeeType] = useState<string[]>([]);
   const [salary, setSalary] = useState<string>('');
 
@@ -26,16 +29,14 @@ const FilterSidebar = () => {
     setSalary(sal);
   };
 
-  const jobStore = useJobStore();
-
   useEffect(() => {
-    jobStore.fetchJobDetails(employeeType, salary);
+    fetchJobDetails(employeeType, salary);
   }, [employeeType, salary]);
 
   const renderEmployeeTypeFilters = (): ReactNode => {
     return Object.keys(EmployeeType).map((e, idx) => {
       return (
-        <CheckboxLabel>
+        <CheckboxLabel key={idx}>
           <input
             key={idx}
             type="checkbox"
@@ -49,9 +50,9 @@ const FilterSidebar = () => {
   };
 
   const renderSalaryFilters = () => {
-    return Object.keys(SalaryRanges).map((e) => {
+    return Object.keys(SalaryRanges).map((e, idx) => {
       return (
-        <RadioLabel>
+        <RadioLabel key={idx}>
           <input
             type="radio"
             name="salary"

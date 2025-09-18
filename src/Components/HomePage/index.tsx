@@ -12,7 +12,7 @@ const HomePage = ():ReactNode => {
         quibusdam cumque possimus, necessitatibus quas quam recusandae provident
         autem hic? Ratione optio
       </p>
-      <button onClick={() => navigate('/jobs')}>Find Jobs</button>
+      <button onClick={() => navigate('/jobs')} data-testid='go-to-jobspage'>Find Jobs</button>
     </HomePageBox>
   );
 };
