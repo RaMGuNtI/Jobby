@@ -33,11 +33,13 @@ test('fetch when search button is triggered success case', async () => {
       </Provider>
     </MemoryRouter>
   );
+  const loaders = screen.getAllByTestId('loader');
 
-  expect(screen.getByTestId('loader')).toBeInTheDocument();
+  expect(loaders).toHaveLength(2);
 
   waitFor(() => {
-    expect(screen.getByTestId('loader')).not.toBeInTheDocument();
+    expect(loaders[0]).not.toBeVisible();
+    expect(loaders[1]).not.toBeVisible();
     fireEvent.change(screen.getByPlaceholderText('search jobs'), {
       target: { value: 'dev' },
     });
@@ -64,10 +66,12 @@ test('fetch when search button is triggered failure case', async () => {
       </Provider>
     </MemoryRouter>
   );
+  const loaders = screen.getAllByTestId('loader');
+  expect(loaders).toHaveLength(2);
 
-  expect(screen.getByTestId('loader')).toBeInTheDocument();
   waitFor(() => {
-    expect(screen.getByTestId('loader')).not.toBeInTheDocument();
+    expect(loaders[0]).not.toBeVisible();
+    expect(loaders[1]).not.toBeVisible();
     fireEvent.change(screen.getByPlaceholderText('search jobs'), {
       target: { value: 'dev' },
     });

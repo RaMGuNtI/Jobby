@@ -1,0 +1,13 @@
+{
+  "jobs": [
+    {
+      "id": "1",
+      "title": "All rounder",
+      "company_logo_url": "logo.png",
+      "employment_type": "24/7",
+      "job_description": "You will die if you join",
+      "location": "it's your wish anyway will die",
+      "package_per_annum": "100 LPA"
+    }
+  ]
+}
